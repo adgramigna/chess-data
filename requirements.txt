@@ -1,0 +1,4 @@
+ipykernel==6.29.4
+polars==0.20.19
+python-dotenv==1.0.1
+requests==2.31.0
