@@ -13,7 +13,7 @@ class Tour(Struct):
     image: str
     markup: str
     url: str
-    leaderboard: bool
+    leaderboard: Optional[bool] = None
 
 
 class Round(Struct):
@@ -24,3 +24,13 @@ class Round(Struct):
     startsAt: int
     url: str
     finished: Optional[bool] = None
+
+
+class Leaderboard(Struct):
+    name: str
+    score: float
+    played: int
+    rating: int
+    title: str
+    fideId: int
+    fed: str

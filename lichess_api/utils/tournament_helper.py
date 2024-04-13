@@ -3,29 +3,33 @@ import polars as pl
 import json
 import os
 from dotenv import load_dotenv
-from utils.classes import Tour, Round
+from utils.classes import Tour, Round, Leaderboard
 from msgspec.json import decode
 
 load_dotenv()
 
 
-def call_lichess_broadcasts_api(broadcast_tournament_id, round_info=None):
+def call_lichess_broadcasts_api(
+    broadcast_tournament_id, round_info=None, leaderboard=False
+):
     headers = {
         "Content-Type": "application/json",
         "X-Api-Key": os.environ.get("LICHESS_API_KEY"),
     }
 
     if round_info is None:
-        lichess_broadcast_endpoint = (
-            f"https://lichess.org/api/broadcast/{broadcast_tournament_id}"
-        )
+        if not leaderboard:
+            lichess_broadcast_endpoint = (
+                f"https://lichess.org/api/broadcast/{broadcast_tournament_id}"
+            )
+        else:
+            lichess_broadcast_endpoint = (
+                f"https://lichess.org/broadcast/{broadcast_tournament_id}/leaderboard"
+            )
     else:
-        pass
+        lichess_broadcast_endpoint = f"https://lichess.org/api/broadcast/{round_info[0]}/{round_info[1]}/{round_info[2]}"
 
     response = requests.get(lichess_broadcast_endpoint, headers=headers)
-
-    # return response
-
     result_json = response.json()
 
     return result_json, lichess_broadcast_endpoint
@@ -71,3 +75,34 @@ def create_broadcast_base_dataframes(json_data, tournament_id):
     lichess_rounds_df = pl.DataFrame(lichess_rounds_final)
 
     return [lichess_tour_df, lichess_rounds_df]
+
+
+def parse_broadcast_tournament_leaderboard(leaderboard_data, tournament_id):
+    player_json = []
+    for i, player_info in enumerate(leaderboard_data):
+        player_json_record = {}
+        player_json_record["fide_id"] = player_info.fideId
+        player_json_record["tournament_id"] = tournament_id
+        player_json_record["name"] = player_info.name
+        player_json_record["score"] = player_info.score
+        player_json_record["number_of_rounds_played"] = player_info.played
+        player_json_record["rating"] = player_info.rating
+        player_json_record["title"] = player_info.title
+        player_json_record["federation"] = player_info.fed
+
+        player_json.append(player_json_record)
+
+    return player_json
+
+
+def create_broadcast_leaderboard_dataframe(json_data, tournament_id):
+    lichess_tournament_leaderboard = decode(
+        json.dumps(json_data), type=list[Leaderboard]
+    )
+    lichess_tournament_leaderboard_final = parse_broadcast_tournament_leaderboard(
+        lichess_tournament_leaderboard, tournament_id
+    )
+
+    lichess_leaderboard_df = pl.DataFrame(lichess_tournament_leaderboard_final)
+
+    return [lichess_leaderboard_df]
