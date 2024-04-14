@@ -17,4 +17,4 @@ class Game(Struct):
     players: list[Player]
     lastMove: str
     status: str  # "*" if game not settled
-    thinkTime: Optional[int] = None  # On
+    thinkTime: Optional[int] = None  # When game is still occurring
