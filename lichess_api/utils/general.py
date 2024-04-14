@@ -6,7 +6,7 @@ load_dotenv()
 
 
 def call_lichess_broadcasts_api(
-    broadcast_tournament_id=None, round_info=None, leaderboard=False
+    broadcast_tournament_id=None, round_info=None, leaderboard=False, round_pgn=False
 ):
     headers = {
         "Content-Type": "application/json",
@@ -14,14 +14,18 @@ def call_lichess_broadcasts_api(
     }
 
     if round_info is None:
-        if not leaderboard:
-            lichess_broadcast_endpoint = (
-                f"https://lichess.org/api/broadcast/{broadcast_tournament_id}"
-            )
-        else:
+        if leaderboard:
             lichess_broadcast_endpoint = (
                 f"https://lichess.org/broadcast/{broadcast_tournament_id}/leaderboard"
             )
+        else:
+            lichess_broadcast_endpoint = (
+                f"https://lichess.org/api/broadcast/{broadcast_tournament_id}"
+            )
+    elif round_pgn:
+        lichess_broadcast_endpoint = (
+            f"https://lichess.org/api/broadcast/round/{round_info[-1]}.pgn"
+        )
     else:
         lichess_broadcast_endpoint = f"https://lichess.org/api/broadcast/{round_info[0]}/{round_info[1]}/{round_info[2]}"
 
