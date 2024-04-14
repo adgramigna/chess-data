@@ -1,10 +1,7 @@
 import polars as pl
 import json
-from dotenv import load_dotenv
 from utils.classes.tournament import Tour, Round
 from msgspec.json import decode
-
-load_dotenv()
 
 
 def parse_broadcast_tournament_base(tour_data, rounds_data, tournament_id):
