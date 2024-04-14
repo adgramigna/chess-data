@@ -1,6 +1,5 @@
 from msgspec import Struct
 from typing import Optional
-# from datetime import datetime
 
 
 class Tour(Struct):
@@ -24,13 +23,3 @@ class Round(Struct):
     startsAt: int
     url: str
     finished: Optional[bool] = None
-
-
-class Leaderboard(Struct):
-    name: str
-    score: float
-    played: int
-    rating: int
-    title: str
-    fideId: int
-    fed: str
