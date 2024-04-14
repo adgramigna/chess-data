@@ -4,19 +4,6 @@ from utils.classes.leaderboard import Leaderboard
 from msgspec.json import decode
 
 
-def create_broadcast_leaderboard_dataframe(json_data, tournament_id):
-    lichess_tournament_leaderboard = decode(
-        json.dumps(json_data), type=list[Leaderboard]
-    )
-    lichess_tournament_leaderboard_final = parse_broadcast_tournament_leaderboard(
-        lichess_tournament_leaderboard, tournament_id
-    )
-
-    lichess_leaderboard_df = pl.DataFrame(lichess_tournament_leaderboard_final)
-
-    return [lichess_leaderboard_df]
-
-
 def parse_broadcast_tournament_leaderboard(leaderboard_data, tournament_id):
     player_json = []
     for i, player_info in enumerate(leaderboard_data):
@@ -33,3 +20,16 @@ def parse_broadcast_tournament_leaderboard(leaderboard_data, tournament_id):
         player_json.append(player_json_record)
 
     return player_json
+
+
+def create_broadcast_leaderboard_dataframe(json_data, tournament_id):
+    lichess_tournament_leaderboard = decode(
+        json.dumps(json_data), type=list[Leaderboard]
+    )
+    lichess_tournament_leaderboard_final = parse_broadcast_tournament_leaderboard(
+        lichess_tournament_leaderboard, tournament_id
+    )
+
+    lichess_leaderboard_df = pl.DataFrame(lichess_tournament_leaderboard_final)
+
+    return [lichess_leaderboard_df]
