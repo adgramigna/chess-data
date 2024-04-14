@@ -6,7 +6,7 @@ load_dotenv()
 
 
 def call_lichess_broadcasts_api(
-    broadcast_tournament_id, round_info=None, leaderboard=False
+    broadcast_tournament_id=None, round_info=None, leaderboard=False
 ):
     headers = {
         "Content-Type": "application/json",
