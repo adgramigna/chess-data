@@ -1,35 +1,46 @@
 import requests
 import os
+import logging
 from dotenv import load_dotenv
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("logger")
 
 load_dotenv()
 
 
-def call_lichess_broadcasts_api(
-    broadcast_tournament_id=None, round_info=None, leaderboard=False, round_pgn=False
-):
+def call_lichess_broadcasts_api(endpoint_type, **kwargs):
     headers = {
         "Content-Type": "application/json",
         "X-Api-Key": os.environ.get("LICHESS_API_KEY"),
     }
 
-    if round_info is None:
-        if leaderboard:
-            lichess_broadcast_endpoint = (
-                f"https://lichess.org/broadcast/{broadcast_tournament_id}/leaderboard"
-            )
-        else:
-            lichess_broadcast_endpoint = (
-                f"https://lichess.org/api/broadcast/{broadcast_tournament_id}"
-            )
-    elif round_pgn:
+    tournament_id = kwargs.get("broadcast_tournament_id")
+    tournament_slug = kwargs.get("broadcast_tournament_slug")
+    round_slug = kwargs.get("broadcast_round_slug")
+    round_id = kwargs.get("broadcast_round_id")
+
+    if endpoint_type == "tournament":
         lichess_broadcast_endpoint = (
-            f"https://lichess.org/api/broadcast/round/{round_info[-1]}.pgn"
+            f"https://lichess.org/api/broadcast/{tournament_id}"
+        )
+    elif endpoint_type == "leaderboard":
+        lichess_broadcast_endpoint = (
+            f"https://lichess.org/broadcast/{tournament_id}/leaderboard"
+        )
+    elif endpoint_type == "round":
+        lichess_broadcast_endpoint = f"https://lichess.org/api/broadcast/{tournament_slug}/{round_slug}/{round_id}"
+    elif endpoint_type == "pgn":
+        lichess_broadcast_endpoint = (
+            f"https://lichess.org/api/broadcast/round/{round_id}.pgn"
         )
     else:
-        lichess_broadcast_endpoint = f"https://lichess.org/api/broadcast/{round_info[0]}/{round_info[1]}/{round_info[2]}"
-
+        lichess_broadcast_endpoint = None
+        logger.error("Invalid Endpoint URL")
     response = requests.get(lichess_broadcast_endpoint, headers=headers)
-    result_json = response.json()
+    if endpoint_type != "pgn":
+        result = response.json()
+    else:
+        result = response.text
 
-    return result_json, lichess_broadcast_endpoint
+    return result, lichess_broadcast_endpoint
