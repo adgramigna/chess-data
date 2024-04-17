@@ -38,9 +38,5 @@ def call_lichess_broadcasts_api(endpoint_type, **kwargs):
         lichess_broadcast_endpoint = None
         logger.error("Invalid Endpoint URL")
     response = requests.get(lichess_broadcast_endpoint, headers=headers)
-    if endpoint_type != "pgn":
-        result = response.json()
-    else:
-        result = response.text
 
-    return result, lichess_broadcast_endpoint
+    return response, lichess_broadcast_endpoint
