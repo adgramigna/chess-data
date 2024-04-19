@@ -6,8 +6,8 @@ class Player(Struct):
     name: str
     title: str
     rating: int
-    clock: int  # centiseconds, time is seconds * 100
     fed: str
+    clock: Optional[int] = None  # centiseconds, time is seconds * 100
 
 
 class Game(Struct):
