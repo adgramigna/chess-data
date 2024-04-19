@@ -1,4 +1,5 @@
 import chess
+import chess.pgn
 import io
 import polars as pl
 from datetime import datetime
