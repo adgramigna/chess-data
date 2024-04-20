@@ -1,6 +1,7 @@
 import requests
 import os
 import logging
+import s3fs
 from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO)
@@ -40,3 +41,23 @@ def call_lichess_broadcasts_api(endpoint_type, **kwargs):
     response = requests.get(lichess_broadcast_endpoint, headers=headers)
 
     return response, lichess_broadcast_endpoint
+
+
+def export_to_s3(df, tournament_id, descriptor):
+    if len(df) == 0:
+        pass
+
+    fs = s3fs.S3FileSystem(
+        key=os.environ.get("AWS_ACCESS_KEY_ID"),
+        secret=os.environ.get("AWS_SECRET_ACCESS_KEY"),
+        client_kwargs={"region_name": os.environ.get("AWS_REGION")},
+    )
+
+    destination = (
+        f"s3://lichess-broadcasts-api/tournaments/{tournament_id}/{descriptor}.parquet"
+    )
+
+    with fs.open(destination, mode="wb") as f:
+        df.write_parquet(f)
+
+    logger.info(f"Exported {descriptor} to s3: {tournament_id}")
