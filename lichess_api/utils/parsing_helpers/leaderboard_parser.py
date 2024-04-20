@@ -8,6 +8,9 @@ def parse_broadcast_tournament_leaderboard(leaderboard_data, tournament_id):
     player_json = []
     for i, player_info in enumerate(leaderboard_data):
         player_json_record = {}
+        player_json_record["surrogate_leaderboard_id"] = (
+            str(player_info.fideId) + "_" + tournament_id
+        )
         player_json_record["fide_id"] = player_info.fideId
         player_json_record["tournament_id"] = tournament_id
         player_json_record["name"] = player_info.name
