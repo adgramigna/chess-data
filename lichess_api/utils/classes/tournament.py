@@ -9,10 +9,10 @@ class Tour(Struct):
     description: str
     createdAt: int
     tier: int
-    image: str
     markup: str
     url: str
     leaderboard: Optional[bool] = None
+    image: Optional[str] = None
 
 
 class Round(Struct):
