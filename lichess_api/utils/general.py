@@ -45,10 +45,7 @@ def call_lichess_broadcasts_api(endpoint_type, **kwargs):
 
 
 def cast_null_col_types(df):
-    null_column_df = df.select([pl.col(pl.Null)])
-    if len(null_column_df) == 0:
-        return df  # no nulls
-    for col in null_column_df.columns:
+    for col in df.select([pl.col(pl.Null)]).columns:
         # if entire column is null, cast type to a string
         df = df.with_columns(pl.col(col).cast(pl.String))
 
