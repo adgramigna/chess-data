@@ -2,6 +2,7 @@ import requests
 import os
 import logging
 import s3fs
+import polars as pl
 from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO)
@@ -43,9 +44,22 @@ def call_lichess_broadcasts_api(endpoint_type, **kwargs):
     return response, lichess_broadcast_endpoint
 
 
+def cast_null_col_types(df):
+    null_column_df = df.select([pl.col(pl.Null)])
+    if len(null_column_df) == 0:
+        return df  # no nulls
+    for col in null_column_df.columns:
+        # if entire column is null, cast type to a string
+        df = df.with_columns(pl.col(col).cast(pl.String))
+
+    return df
+
+
 def export_to_s3(df, tournament_id, descriptor):
     if len(df) == 0:
         pass
+
+    df = cast_null_col_types(df)
 
     fs = s3fs.S3FileSystem(
         key=os.environ.get("AWS_ACCESS_KEY_ID"),
