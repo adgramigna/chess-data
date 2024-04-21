@@ -1,0 +1,14 @@
+chessray:
+  outputs:
+    dev:
+      type: duckdb
+      path: /tmp/lichess_data.duckdb
+      extensions:
+        - httpfs
+        - parquet
+      settings:
+        s3_region: us-east-2
+        s3_access_key_id: "{{ env_var('DBT_AWS_ACCESS_KEY_ID') }}"
+        s3_secret_access_key: "{{ env_var('DBT_AWS_SECRET_ACCESS_KEY') }}" 
+      external_root: "s3://lichess-broadcasts-api/dbt_duckdb"
+  target: dev
