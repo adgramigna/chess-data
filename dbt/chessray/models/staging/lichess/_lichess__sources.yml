@@ -1,0 +1,12 @@
+sources:
+  - name: lichess
+    meta:
+      external_location: "s3://lichess-broadcasts-api/tournaments/*/{name}.parquet"
+    tables:
+      - name: game_headers 
+      - name: game_moves
+      - name: game_players
+      - name: leaderboard
+      - name: rounds_detail
+      - name: rounds_outline
+      - name: tournament
