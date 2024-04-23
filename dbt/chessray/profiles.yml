@@ -2,7 +2,7 @@ chessray:
   outputs:
     dev:
       type: duckdb
-      path: /tmp/lichess_data.duckdb
+      path: lichess_data.duckdb
       extensions:
         - httpfs
         - parquet
