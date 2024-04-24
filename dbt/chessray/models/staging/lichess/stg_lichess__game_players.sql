@@ -1,6 +1,6 @@
 select 
     surrogate_game_player_id,
-    name as player_name,
+    {{ clean_player_name("name") }} as player_name,
     game_id,
     color,
     is_white,
