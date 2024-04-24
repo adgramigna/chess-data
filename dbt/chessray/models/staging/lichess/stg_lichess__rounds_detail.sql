@@ -5,8 +5,8 @@ select
     last_move,
     status as game_status,
     case 
-        when status = '*' then true
-        else false
+        when status = '*' then false
+        else true
     end as is_finished,
     case 
         when status = '1-0' then true
