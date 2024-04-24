@@ -12,11 +12,7 @@ select
     sum(case when nag = 6 then 1 else 0 end) as num_inaccuracies,
     sum(case when nag = 2 then 1 else 0 end) as num_mistakes,
     sum(case when nag = 4 then 1 else 0 end) as num_blunders,
-    sum(case 
-            when nag = 2 or nag = 4 or nag = 6
-            then 1 else 0
-        end
-    ) as num_poor_moves,
+    sum(case when nag = 2 or nag = 4 or nag = 6 then 1 else 0 end) as num_poor_moves,
     sum(case when nag = 6 and time_pressure_category = 'time pressure' then 1 else 0 end) as num_inaccuracies_under_time_pressure,
     sum(case when nag = 2 and time_pressure_category = 'time pressure' then 1 else 0 end) as num_mistakes_under_time_pressure,
     sum(case when nag = 4 and time_pressure_category = 'time pressure' then 1 else 0 end) as num_blunders_under_time_pressure,
