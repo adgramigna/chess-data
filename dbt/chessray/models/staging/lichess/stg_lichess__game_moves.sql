@@ -1,4 +1,4 @@
-with add_win_perc as (
+with moves_with_win_percentage as (
     select *, 
         case 
             when not is_checkmate_countdown then 100 / (1 + exp(-0.00368208 * engine_evaluation_score * 100)) 
@@ -34,10 +34,15 @@ select
             over(partition by surrogate_game_id order by row_number) - (100 - white_win_percentage))) - 3.1669, 100) 
     end as move_accuracy,
     clock_time,
+    case 
+        when clock_time < 300 then 'time pressure'
+        when clock_time < 60 then 'severe time pressure'
+        else 'no time pressure'
+    end as time_pressure_cateogry,
     engine_evaluation_score,
     is_checkmate_countdown,
     is_white_move,
     nag,
     comment,
     fen
-from add_win_perc
+from moves_with_win_percentage
