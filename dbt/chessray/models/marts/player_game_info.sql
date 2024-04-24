@@ -42,7 +42,6 @@ initial_player_game_info as (
         game_players.game_id,
         game_outline.round_id,
         rounds_outline.tournament_id,
-        {# game_outline.game_status, #}
         case
             when is_draw then 0.5
             when (game_players.is_white and game_outline.is_white_victory)
@@ -55,14 +54,14 @@ initial_player_game_info as (
             game_headers_white.surrogate_game_id, 
             game_headers_black.surrogate_game_id
         ) as surrogate_game_id,
-        {# coalesce(
+        coalesce(
             game_headers_white.chess_variant, 
             game_headers_black.chess_variant
         ) as chess_variant,
         coalesce(
             game_headers_white.opening_general, 
             game_headers_black.opening_general
-        ) as opening_general, #}
+        ) as opening_general,
     from game_players
     inner join game_outline on game_players.game_id = game_outline.game_id
     inner join rounds_outline on game_outline.round_id = rounds_outline.round_id
