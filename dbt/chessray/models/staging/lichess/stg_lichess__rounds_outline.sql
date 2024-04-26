@@ -8,3 +8,4 @@ select
     url as round_url,
     finished as is_finished
 from {{ source('lichess', 'rounds_outline') }}
+where finished
