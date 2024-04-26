@@ -3,7 +3,9 @@ with moves_augmented as (
         case 
             when not is_checkmate_countdown then 100 / (1 + exp(-0.00368208 * engine_evaluation_score * 100)) 
             else 100 / (1 + exp(-0.00368208 * (3000 - engine_evaluation_score)))
-        end as white_win_percentage
+        end as white_win_percentage,
+        lower(split_part(fen,' ',1)) as fen_lower,
+        replace(replace(replace(replace(lower(split_part(fen,' ',1)), 'b', ''),'n', ''), 'q', ''), 'r', '') as fen_no_majors,
     from {{ source('lichess', 'game_moves') }}
 )
 
@@ -44,5 +46,6 @@ select
     is_white_move,
     nag,
     comment,
-    fen
+    fen,
+    length(fen_lower) - length(fen_no_majors) <= 6 as is_endgame
 from moves_augmented
