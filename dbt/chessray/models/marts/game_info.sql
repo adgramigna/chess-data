@@ -11,7 +11,7 @@ game_headers as (
 ),
 
 surrogate_game_id_map as (
-    select * from {{ ref('int_surrogate_game_id_to_game_id_map') }}
+    select * from {{ ref('int_ids_map') }}
 )
 
 select 
