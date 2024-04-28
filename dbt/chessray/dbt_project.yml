@@ -39,6 +39,8 @@ models:
       +materialized: view
     intermediate:
       +materialized: ephemeral
+      maps:
+        +materialized: table
     marts:
       +materialized: table
     
