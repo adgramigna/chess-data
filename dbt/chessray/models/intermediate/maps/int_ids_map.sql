@@ -16,7 +16,6 @@ rounds_outline as (
 
 select
     md5(game_players.player_name || '_' || game_players.game_id) as id,
-    game_players.is_white,
     game_players.game_id,
     game_players.player_name,
     coalesce(
