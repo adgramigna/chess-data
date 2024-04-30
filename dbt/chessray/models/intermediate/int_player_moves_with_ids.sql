@@ -28,11 +28,10 @@ select
     game_detail.is_checkmate_countdown,
     game_detail.engine_evaluation_score,
     game_detail.color_with_winning_advantage,
-    game_detail.is_white_winning_advantage,
-    game_detail.is_black_winning_advantage,
-    (game_detail.is_white_winning_advantage and game_detail.is_white_move) or
-    (game_detail.is_black_winning_advantage and not game_detail.is_white_move) as is_gained_winning_advantage,
+    game_detail.is_given_away_winning_advantage,
+    game_detail.has_winning_advantage,
     game_detail.is_lost_winning_advantage,
+    game_detail.is_poor_move,
     game_detail.nag,
     game_detail.comment,
     game_detail.fen

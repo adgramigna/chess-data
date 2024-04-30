@@ -3,29 +3,20 @@ with game_players as (
 ),
 
 player_moves_agg as (
-    select
-        player_name,
-        game_id,
-        sum(player_moves) as player_moves,
-        sum(num_checks_given) as num_checks_given,
-        sum(num_captures) as num_captures,
-        sum(time_spent_on_moves) as time_spent_on_moves,
-        sum(num_times_losing_winning_advantage) as num_times_losing_winning_advantage,
-        sum(num_inaccuracies) as num_inaccuracies,
-        sum(num_mistakes) as num_mistakes,
-        sum(num_blunders) as num_blunders,
-        sum(num_poor_moves) as num_poor_moves,
-    from {{ ref('player_moves_agg') }}
-    group by 1,2
+    select * from {{ ref('int_player_game_swap_winning_advantage') }}
 ),
 
-game_outline as (
-    select * from {{ ref('stg_lichess__rounds_detail') }}
+player_game_points as (
+    select * from {{ ref('int_player_game_points') }}
 ),
 
 ids_map as (
     select * from {{ ref('int_ids_map') }}
 ),
+
+player_game_accuracy as (
+    select * from {{ ref('int_player_game_accuracy') }}
+)
 
 select 
     md5(game_players.player_name || '_' || game_players.game_id) as id,
@@ -34,17 +25,25 @@ select
     game_players.game_id,
     ids_map.round_id,
     ids_map.tournament_id,
-    case
-        when is_draw then 0.5
-        when (game_players.is_white and game_outline.is_white_victory)
-        or (not game_players.is_white and game_outline.is_black_victory) then 1
-        else 0
-    end as num_points,
+    player_game_points.num_points,
     game_players.color,
     game_players.is_white,
-    player_moves_agg.* exclude(player_name, game_id)
+    player_game_accuracy.accuracy,
+    player_moves_agg.* exclude(player_name, game_id, is_white, num_times_gaining_winning_advantage),
+    --if no explicit times gaining winning advantage and you win, it must have happened once
+    case
+        when num_points = 1 and num_times_gaining_winning_advantage <= num_times_losing_winning_advantage 
+        then num_times_losing_winning_advantage + 1
+        when num_times_gaining_winning_advantage < num_times_losing_winning_advantage
+        then num_times_losing_winning_advantage
+        else num_times_gaining_winning_advantage
+    end as num_times_gaining_winning_advantage
 from game_players
-inner join game_outline on game_players.game_id = game_outline.game_id
 inner join ids_map on game_players.game_id = ids_map.game_id
-inner join player_moves_agg on ids_map.game_id = player_moves_agg.game_id
     and game_players.player_name = ids_map.player_name
+inner join player_game_points on game_players.game_id = player_game_points.game_id
+    and game_players.player_name = player_game_points.player_name
+inner join player_moves_agg on ids_map.game_id = player_moves_agg.game_id
+    and game_players.player_name = player_moves_agg.player_name
+inner join player_game_accuracy on ids_map.game_id = player_game_accuracy.game_id
+    and game_players.player_name = player_game_accuracy.player_name

@@ -1,8 +1,10 @@
 with add_color_with_winning_advantage as (
     select *,
-    case 
-        when engine_evaluation_score > 1.25 then 'white'
-        when engine_evaluation_score < -1.25 then 'black'
+    case
+        when is_checkmate_countdown and engine_evaluation_score > 0 then 'white'
+        when is_checkmate_countdown and engine_evaluation_score < 0 then 'black'
+        when engine_evaluation_score > 1.8 then 'white'
+        when engine_evaluation_score < -1.8 then 'black'
         else 'neutral'
     end as color_with_winning_advantage
     from {{ source('lichess', 'game_moves') }}
@@ -15,7 +17,8 @@ moves_augmented as (
             else 100 / (1 + exp(-0.00368208 * (3000 - engine_evaluation_score)))
         end as white_win_percentage,
         lag(color_with_winning_advantage) over(partition by surrogate_game_id order by row_number) as previous_color_with_winning_advantage,
-        clock_time - lag(clock_time) over(partition by surrogate_game_id, is_white order by row_number) time_spent_on_move,
+        lag(clock_time) over(partition by surrogate_game_id, is_white_move order by row_number) - clock_time as time_spent_on_move,
+        nag = 2 or nag = 4 or nag = 6 as is_poor_move,
         lower(split_part(fen,' ',1)) as fen_lower,
         replace(replace(replace(replace(lower(split_part(fen,' ',1)), 'b', ''),'n', ''), 'q', ''), 'r', '') as fen_no_majors
     from add_color_with_winning_advantage
@@ -28,6 +31,8 @@ select
     move_number,
     starting_square,
     san,
+    san = 'e4' and move_number = 1 as is_e4_game,
+    san = 'd4' and move_number = 1 as is_d4_game,
     case 
         when left(san, 1) = 'K' then 'king'
         when left(san, 1) = 'R' then 'rook'
@@ -54,15 +59,27 @@ select
     length(fen_lower) - length(fen_no_majors) <= 6 as is_endgame,
     engine_evaluation_score,
     color_with_winning_advantage,
-    previous_color_with_winning_advantage != color_with_winning_advantage 
-        and color_with_winning_advantage = 'white' as is_white_winning_advantage,
-    previous_color_with_winning_advantage != color_with_winning_advantage 
-        and color_with_winning_advantage = 'black' as is_black_winning_advantage,
-    (previous_color_with_winning_advantage = 'white' and color_with_winning_advantage != 'white' and is_white_move) 
-        or (previous_color_with_winning_advantage = 'black' and color_with_winning_advantage != 'black' and not is_white_move) as is_lost_winning_advantage,
+    (color_with_winning_advantage = 'white' and is_white_move) 
+    or (color_with_winning_advantage = 'black' and not is_white_move) as has_winning_advantage,
+    (previous_color_with_winning_advantage != color_with_winning_advantage 
+        and (color_with_winning_advantage = 'white' and not is_white_move
+        or color_with_winning_advantage = 'black' and is_white_move)) 
+        
+        --Not sure if I'll remove this line, compare with both options #TODO
+        and (is_poor_move) 
+
+        as is_given_away_winning_advantage,
+    ((previous_color_with_winning_advantage = 'white' and color_with_winning_advantage != 'white' and is_white_move) 
+        or (previous_color_with_winning_advantage = 'black' and color_with_winning_advantage != 'black' and not is_white_move))
+     
+    --Not sure if I'll remove this line, compare with both options #TODO
+     and (is_poor_move)
+     
+     as is_lost_winning_advantage,
     is_checkmate_countdown,
     is_white_move,
     nag,
+    is_poor_move,
     comment,
     fen
 from moves_augmented
