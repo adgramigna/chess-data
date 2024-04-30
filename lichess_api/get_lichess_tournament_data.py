@@ -35,6 +35,8 @@ def get_rounds_detail_dfs(
     lichess_rounds_detail_df_all = pl.concat(
         [lichess_rounds_detail_df_all, lichess_rounds_detail_df]
     )
+
+    lichess_players_df = general_util.cast_null_col_types(lichess_players_df)
     lichess_players_df_all = pl.concat([lichess_players_df_all, lichess_players_df])
 
     return lichess_rounds_detail_df_all, lichess_players_df_all
