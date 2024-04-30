@@ -14,6 +14,5 @@ select
     sum(case when nag = 2 then 1 else 0 end) as num_mistakes,
     sum(case when nag = 4 then 1 else 0 end) as num_blunders,
     sum(case when is_poor_move then 1 else 0 end) as num_poor_moves,
-    max(has_winning_advantage) as has_winning_advantage,
 from {{ ref('int_player_moves_with_ids') }}
 group by 1,2,3,4,5

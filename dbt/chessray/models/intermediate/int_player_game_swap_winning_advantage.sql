@@ -12,9 +12,7 @@ with player_moves_agg as (
         sum(num_inaccuracies) as num_inaccuracies,
         sum(num_mistakes) as num_mistakes,
         sum(num_blunders) as num_blunders,
-        sum(num_poor_moves) as num_poor_moves,
-        max(case when is_endgame then has_winning_advantage end) as had_endgame_winning_advantange,
-        max(has_winning_advantage) as had_winning_advantange,
+        sum(num_poor_moves) as num_poor_moves
     from {{ ref('int_player_moves_agg') }}
     group by 1,2,3
 ),

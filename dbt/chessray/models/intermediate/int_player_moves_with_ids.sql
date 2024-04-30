@@ -29,7 +29,6 @@ select
     game_detail.engine_evaluation_score,
     game_detail.color_with_winning_advantage,
     game_detail.is_given_away_winning_advantage,
-    game_detail.has_winning_advantage,
     game_detail.is_lost_winning_advantage,
     game_detail.is_poor_move,
     game_detail.nag,

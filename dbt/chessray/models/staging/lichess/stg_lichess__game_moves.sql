@@ -59,8 +59,6 @@ select
     length(fen_lower) - length(fen_no_majors) <= 6 as is_endgame,
     engine_evaluation_score,
     color_with_winning_advantage,
-    (color_with_winning_advantage = 'white' and is_white_move) 
-    or (color_with_winning_advantage = 'black' and not is_white_move) as has_winning_advantage,
     (previous_color_with_winning_advantage != color_with_winning_advantage 
         and (color_with_winning_advantage = 'white' and not is_white_move
         or color_with_winning_advantage = 'black' and is_white_move)) 
