@@ -23,6 +23,8 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+vars:
+  winning_advantage_eval: 1.5
 
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
@@ -37,10 +39,13 @@ models:
       +materialized: view
     staging:
       +materialized: view
+      +tags: staging
     intermediate:
       +materialized: ephemeral
+      +tags: intermediate
       maps:
         +materialized: table
     marts:
       +materialized: table
+      +tags: marts
     
