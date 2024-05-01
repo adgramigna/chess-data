@@ -3,8 +3,8 @@ with add_color_with_winning_advantage as (
     case
         when is_checkmate_countdown and engine_evaluation_score > 0 then 'white'
         when is_checkmate_countdown and engine_evaluation_score < 0 then 'black'
-        when engine_evaluation_score > 1.8 then 'white'
-        when engine_evaluation_score < -1.8 then 'black'
+        when engine_evaluation_score > {{ var('winning_advantage_eval') }} then 'white'
+        when engine_evaluation_score < -1 * {{ var('winning_advantage_eval') }} then 'black'
         else 'neutral'
     end as color_with_winning_advantage
     from {{ source('lichess', 'game_moves') }}

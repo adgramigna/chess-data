@@ -1,6 +1,7 @@
 select
     player_name,
     game_id,
+    tournament_id,
     is_white_move as is_white,
     is_endgame,
     time_pressure_category,
@@ -15,4 +16,4 @@ select
     sum(case when nag = 4 then 1 else 0 end) as num_blunders,
     sum(case when is_poor_move then 1 else 0 end) as num_poor_moves,
 from {{ ref('int_player_moves_with_ids') }}
-group by 1,2,3,4,5
+group by 1,2,3,4,5,6
