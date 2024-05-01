@@ -2,7 +2,7 @@ chessray:
   outputs:
     dev:
       type: duckdb
-      path: lichess_data.duckdb
+      path: "{{ env_var('DBT_DUCKDB_PATH') }}/lichess_data/lichess_data.duckdb"
       extensions:
         - httpfs
         - parquet
