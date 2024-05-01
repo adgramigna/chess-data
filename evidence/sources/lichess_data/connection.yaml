@@ -1,0 +1,5 @@
+# This file was automatically generated
+name: lichess_data
+type: duckdb
+options:
+  filename: lichess_data.duckdb
