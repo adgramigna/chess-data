@@ -161,3 +161,5 @@ cython_debug/
 
 sample_data
 .DS_Store
+
+duckdb_test.ipynb
