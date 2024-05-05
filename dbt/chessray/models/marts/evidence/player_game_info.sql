@@ -29,7 +29,8 @@ select
     game_players.color,
     game_players.is_white,
     player_game_accuracy.accuracy,
-    player_moves_agg.* exclude(player_name, game_id, is_white, num_times_gaining_winning_advantage),
+    player_moves_agg.* exclude(player_name, game_id, is_white, 
+    num_times_gaining_winning_advantage, num_times_given_away_winning_advantage),
     --if no explicit times gaining winning advantage and you win, it must have happened once
     case
         when num_points = 1 and num_times_gaining_winning_advantage <= num_times_losing_winning_advantage 
@@ -37,7 +38,12 @@ select
         when num_times_gaining_winning_advantage < num_times_losing_winning_advantage
         then num_times_losing_winning_advantage
         else num_times_gaining_winning_advantage
-    end as num_times_gaining_winning_advantage
+    end as num_times_gaining_winning_advantage,
+    case
+        when num_points = 0 and num_times_given_away_winning_advantage = 0
+        then num_times_given_away_winning_advantage + 1
+        else num_times_given_away_winning_advantage
+    end as num_times_given_away_winning_advantage
 from game_players
 inner join ids_map on game_players.game_id = ids_map.game_id
     and game_players.player_name = ids_map.player_name
