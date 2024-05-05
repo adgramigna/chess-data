@@ -24,8 +24,7 @@ select
     ) as surrogate_game_id,
     rounds_outline.round_id,
     rounds_outline.tournament_id,
-
-    /* Do we need? */
+    rounds_outline.round_number,
     game_players.color,
     game_players.is_white,
     game_players.colloquial_name,

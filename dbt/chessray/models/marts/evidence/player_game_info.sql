@@ -25,6 +25,7 @@ select
     game_players.game_id,
     ids_map.round_id,
     ids_map.tournament_id,
+    ids_map.round_number,
     player_game_points.num_points,
     game_players.color,
     game_players.is_white,

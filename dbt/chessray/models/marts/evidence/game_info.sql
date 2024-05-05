@@ -30,7 +30,8 @@ ids_map as (
         game_id,
         surrogate_game_id,
         round_id,
-        tournament_id
+        tournament_id,
+        round_number
     from {{ ref('int_ids_map') }}
     group by all
 ),
@@ -43,6 +44,7 @@ select
     ids_map.game_id,
     ids_map.round_id,
     ids_map.tournament_id,
+    ids_map.round_number,
     game_outline.game_status,
     game_headers.chess_variant,
     game_headers.opening_general,
