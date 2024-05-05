@@ -14,7 +14,7 @@ moves_augmented as (
     select *, 
         case 
             when not is_checkmate_countdown then 100 / (1 + exp(-0.00368208 * engine_evaluation_score * 100)) 
-            else 100 / (1 + exp(-0.00368208 * (3000 - engine_evaluation_score)))
+            else 100 / (1 + exp(-0.00368208 * (1000 - engine_evaluation_score)))
         end as white_win_percentage,
         lag(color_with_winning_advantage) over(partition by surrogate_game_id order by row_number) as previous_color_with_winning_advantage,
         lag(clock_time) over(partition by surrogate_game_id, is_white_move order by row_number) - clock_time as time_spent_on_move,
@@ -51,6 +51,7 @@ select
             over(partition by surrogate_game_id order by row_number) - (100 - white_win_percentage))) - 3.1669, 100) 
     end as move_accuracy,
     time_spent_on_move,
+    white_win_percentage,
     case 
         when clock_time < 60 then 'severe time pressure'
         when clock_time < 300 then 'time pressure'
@@ -58,21 +59,20 @@ select
     end as time_pressure_category,
     length(fen_lower) - length(fen_no_majors) <= 6 as is_endgame,
     engine_evaluation_score,
+    case 
+        when not is_checkmate_countdown then engine_evaluation_score
+        when engine_evaluation_score < 0 then -10 + (engine_evaluation_score / 100)
+        when engine_evaluation_score > 0 then 10 + (engine_evaluation_score / 100)
+    end as massaged_engine_evaluation_score,
     color_with_winning_advantage,
     (previous_color_with_winning_advantage != color_with_winning_advantage 
         and (color_with_winning_advantage = 'white' and not is_white_move
         or color_with_winning_advantage = 'black' and is_white_move)) 
-        
-        --Not sure if I'll remove this line, compare with both options #TODO
         and (is_poor_move) 
-
         as is_given_away_winning_advantage,
     ((previous_color_with_winning_advantage = 'white' and color_with_winning_advantage != 'white' and is_white_move) 
         or (previous_color_with_winning_advantage = 'black' and color_with_winning_advantage != 'black' and not is_white_move))
-     
-    --Not sure if I'll remove this line, compare with both options #TODO
      and (is_poor_move)
-     
      as is_lost_winning_advantage,
     is_checkmate_countdown,
     is_white_move,
