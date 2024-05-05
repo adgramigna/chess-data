@@ -1,4 +1,5 @@
 ---
+sidebar_position: 2
 queries:
   - winning_and_losing_positions: winning_vs_losing_advantage.sql 
 ---

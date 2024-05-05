@@ -1,4 +1,5 @@
 ---
+sidebar_position: 3
 queries:
   - detailed_openings: detailed_openings.sql
   - white_vs_black: white_vs_black.sql
