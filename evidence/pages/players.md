@@ -1,3 +1,9 @@
+---
+queries:
+  - winning_and_losing_positions: winning_vs_losing_advantage.sql 
+---
+
+
 # Player Breakdown
 
 ## Time Pressure Performance
@@ -175,9 +181,6 @@ Poor moves increase in likelihood by 2-3x with each jump in time pressure catego
 
 ## Winning and Losing Positions
 
-```sql winning_and_losing_positions
-select * from lichess_data.winning_and_losing_advantage
-```
 
 <BarChart
   data={winning_and_losing_positions}

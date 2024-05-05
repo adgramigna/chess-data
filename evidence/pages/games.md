@@ -120,19 +120,19 @@ Something completely different.
 select
      'White' as name,
      num_wins as value,
-from lichess_data.white_vs_black
+from ${white_vs_black}
 where is_white
 union all
 select
      'Draw' as name,
      num_draws as value,
-from lichess_data.white_vs_black
+from ${white_vs_black}
 where is_white
 union all
 select
      'Black' as name,
      num_wins as value,
-from lichess_data.white_vs_black
+from ${white_vs_black}
 where not is_white
 ```
 
