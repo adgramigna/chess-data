@@ -67,8 +67,10 @@ order by move_number, move_color desc
     colorPalette={['#f4ebe0', '#121212']}
     lineColor='#D85001'
     legend=false
-    title="Engine Evaluation Throughout the Game"
-/>
+    title="Engine Evaluation Throughout the Game">
+    <ReferenceLine y=1.5 label="White Winning Advantage" hideValue=true labelPosition=aboveStart/>
+    <ReferenceLine y=-1.5 label="Black Winning Advantage" hideValue=true labelPosition=aboveStart/>
+</AreaChart>
 
 ```sql game_result
 select 
