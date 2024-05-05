@@ -10,7 +10,7 @@ select
     sum(case when num_points = 1 then 1 else 0 end) as wins, 
     sum(case when num_points = 0.5 then 1 else 0 end) as draws, 
     sum(case when num_points = 0 then 1 else 0 end) as losses, 
-from lichess_data.player_game_info
+from lichess_data.src_player_game_info
 group by 1
 order by 2 desc, sum(num_blunders)
 ```
@@ -28,7 +28,7 @@ order by 2 desc, sum(num_blunders)
     round_number,
     colloquial_name,
     sum(num_points) over (partition by colloquial_name order by round_number asc rows between unbounded preceding and current row) as current_points,
-  from player_game_info
+  from src_player_game_info
 ```
 
 <LineChart
@@ -48,7 +48,7 @@ order by 2 desc, sum(num_blunders)
         tournament_id, 
         count(distinct game_id) as total_games,
         avg(accuracy) / 100 as accuracy
-    from player_game_info
+    from src_player_game_info
     group by 1,2
     order by 2, 4 desc
 ```
@@ -66,29 +66,16 @@ order by 2 desc, sum(num_blunders)
 Despite having no losses and the highest accuracy, Nepo could not top Gukesh. 
 
 
-```sql game_info
-select * exclude(white_player, black_player),
-    case 
-        when left(split_part(white_player, ', ', 1), 4) = 'Nepo' then 'Nepo'
-        when left( split_part(white_player, ', ', 2), 5) = 'Pragg' then 'Pragg'
-        when len(split_part(white_player, ', ', 1)) = 1 then split_part(white_player, ', ', 2)
-        else split_part(white_player, ', ', 1)
-    end as white_player,
-    case 
-        when left(split_part(black_player, ', ', 1), 4) = 'Nepo' then 'Nepo'
-        when left( split_part(black_player, ', ', 2), 5) = 'Pragg' then 'Pragg'
-        when len(split_part(black_player, ', ', 1)) = 1 then split_part(black_player, ', ', 2)
-        else split_part(black_player, ', ', 1)
-    end as black_player,
-from lichess_data.game_info
+```sql all_game_info
+  select * from lichess_data.src_game_info
 ```
 
 ## Poor Moves by Player
 
 <Heatmap 
-    data={game_info} 
-    x=white_player 
-    y=black_player
+    data={all_game_info} 
+    x=white_player_colloquial 
+    y=black_player_colloquial
     value=total_poor_moves
     subtitle="White Player Horizontal Black Player Vertical"
     xLabelRotation=-45

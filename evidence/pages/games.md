@@ -1,7 +1,13 @@
+---
+queries:
+  - detailed_openings: detailed_openings.sql
+  - white_vs_black: white_vs_black.sql
+---
+
 # Game Breakdown
 
 ```sql player_options
-    select distinct colloquial_name from player_game_info
+    select distinct colloquial_name from src_player_game_info
 ```
 
 <Dropdown
@@ -34,7 +40,7 @@ with unioned_moves as (
         greatest(massaged_engine_evaluation_score,0) as graph_score,
         massaged_engine_evaluation_score >= 0 as is_kept,
         'White' as move_color, 
-    from game_moves
+    from lichess_data.src_game_moves
     where is_white_move
     union all
     select
@@ -47,7 +53,7 @@ with unioned_moves as (
         least(massaged_engine_evaluation_score,0) as graph_score,
         massaged_engine_evaluation_score <= 0 as is_kept,
         'Black' as move_color,
-    from lichess_data.game_moves
+    from lichess_data.src_game_moves
     where not is_white_move
 )
 
@@ -74,9 +80,9 @@ order by move_number, move_color desc
 
 ```sql game_result
 select 
-    game_info.game_status, game_info.white_player_colloquial, game_info.black_player_colloquial 
-    from lichess_data.game_info
-    inner join ${game_moves_formatted} as gmf on game_info.game_id = gmf.game_id
+    src_game_info.game_status, src_game_info.white_player_colloquial, src_game_info.black_player_colloquial 
+    from lichess_data.src_game_info
+    inner join ${game_moves_formatted} as gmf on src_game_info.game_id = gmf.game_id
     group by all
 ```
 
@@ -182,7 +188,7 @@ Over half the games ended in a draw, and of the games which were decisive, 60% w
 
 ```sql opening_breakdown
 select *
-from lichess_data.detailed_openings
+from ${detailed_openings}
 ```
 
 ## Game Openings
@@ -199,8 +205,8 @@ from lichess_data.detailed_openings
     select 
         first_move as name,
         count(*) as value,
-        count(*) / (select count(*) from game_info) as pct
-    from game_info
+        count(*) / (select count(*) from src_game_info) as pct
+    from src_game_info
     group by 1
 ```
 

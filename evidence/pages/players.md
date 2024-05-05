@@ -5,13 +5,13 @@
 ```sql time_pressure_options
 select distinct
     time_pressure_category
-from player_moves_agg
+from src_player_moves_agg
 ```
 
 ```sql endgame_options
 select distinct
     case when is_endgame = true then 'True' else 'False' end as is_endgame_string
-from player_moves_agg
+from src_player_moves_agg
 ```
 
 <Dropdown
@@ -35,8 +35,7 @@ from player_moves_agg
 ```sql poor_moves_breakdown
 with add_is_endgame_string as (
     select *, case when is_endgame = true then 'True' else 'False' end as is_endgame_string 
-    from
-    player_moves_agg
+    from src_player_moves_agg
 ),
 
 
@@ -88,7 +87,7 @@ with poor_moves_agg as (
         time_pressure_category,
         sum(case when nag != 0 then player_moves end) as poor_moves,
         sum(player_moves) as player_moves,
-    from player_moves_agg
+    from src_player_moves_agg
     group by 1,2
 )
 
@@ -115,7 +114,7 @@ with poor_moves_agg as (
         time_pressure_category,
         sum(case when nag != 0 then player_moves end) as poor_moves,
         sum(player_moves) as player_moves,
-    from player_moves_agg
+    from src_player_moves_agg
     group by 1,2
 ),
 
