@@ -85,7 +85,7 @@ from player_moves_agg_cleaned
     title="Poor Moves by Game Sitauation"
 />
 
-Nakamura played amazingly in endgames, only one innaccuracy all tournament! With no time pressure, Gukesh played the most sharp chess not having a single mistake or blunder until he reached time pressure.
+Nakamura played amazingly in endgames, only one inaccuracy all tournament! When the players were not in time pressure, Gukesh was the most sharp, without a single mistake or blunder until under 5 minutes on his clock.
 
 ```sql poor_moves_time_pressure
 with poor_moves_agg as (
@@ -208,7 +208,7 @@ Poor moves increase in likelihood by 2-3x with each jump in time pressure catego
   title="Winning Positions Converted"
 />
 
-Vidit is a bit of a surprise to see with the most winning positions in the tournament. He was unable to convert twice, the most of any candidate. Gukesh converted all five of his winning positions, a crucial factor in his tournament victory.
+Vidit is a bit of a surprise to among those with the most winning positions in the tournament. He was unable to convert twice, the most of any candidate. Gukesh converted all five of his winning positions, a crucial factor in his tournament victory.
 
 <BarChart
   data={winning_and_losing_positions}

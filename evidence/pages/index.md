@@ -14,7 +14,9 @@ title: "Chessray: A Deeper Dive into the 2024 FIDE Candidates Tournament"
 # Definitions
 
 ## General
+  - *Move*: One move in chess is considered a move by both white and black. So when we say the average game lasted 46 moves, white and black each averaged 46 moves.
   - *Endgame*: Major pieces + minor pieces less than or equal to 6
+  - *Game Openings*: Parsed directly from PGN annotated by Lichess 
 
 ## Time pressure categories:
   - *no time pressure*: >= 5 minutes remaining on the player's clock

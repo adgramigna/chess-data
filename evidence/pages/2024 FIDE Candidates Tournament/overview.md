@@ -38,7 +38,7 @@ order by 2 desc, sum(num_blunders)
   series=colloquial_name
   step=true
   stepPosition=start
-  colorPalette={['#FF6B6B','#FFD166','#06D6A0', '#118AB2', '#EF476F', '#000065', '#8338EC', '#FF9F1C']}
+  colorPalette={['#FFCDCB','#FFD166','#06D6A0', '#118AB2', '#EF476F', '#000065', '#8338EC', '#FF9F1C']}
   title="Standings by Round"
 />
 
@@ -85,3 +85,37 @@ Despite having no losses and the highest accuracy, Nepo could not top Gukesh.
 />
 
 Gukesh vs Abasov was the biggest blunderfest of the tournament, with the infamous Fabi/Nepo round 14 game as a close second. Another key insight from this shows Nepo was unable to capitalize in games with the white pieces. Despite not losing a single game, in games where Nepo needed to push for a win, either his opponents defended incredibly well, or he was unable to bring them into complicated positions. 
+
+
+```sql game_stats
+  select 
+    tournament_id,
+    avg(total_moves) as avg_total_moves,
+    avg(total_poor_moves) as avg_total_poor_moves,
+    avg(total_captures) as avg_total_captures,
+  from lichess_data.src_game_info
+  group by 1
+```
+
+## Summary Statistics per game
+
+<BigValue 
+  data={game_stats}
+  value=avg_total_moves
+  title="Average Total Moves"
+  fmt=#,##0.0
+/>
+
+<BigValue 
+  data={game_stats}
+  value=avg_total_poor_moves
+  title="Average Total Poor Moves"
+  fmt=#,##0.0
+/>
+
+<BigValue 
+  data={game_stats}
+  value=avg_total_captures
+  title="Average Total Captures"
+  fmt=#,##0.0
+/>
