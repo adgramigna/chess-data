@@ -1,5 +1,5 @@
 ---
-title: "Overview of FIDE Candidates Tournament 2024"
+title: "Overview"
 sidebar_position: 1
 ---
 
