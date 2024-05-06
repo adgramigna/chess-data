@@ -82,6 +82,7 @@ Despite having no losses and the highest accuracy, Nepo could not top Gukesh.
     xSort=white_player
     ySort=black_player
     colorPalette={['#fde725', '#a0da39', '#4ac16d', '#1fa187', '#277f8e', '#365c8d', '#46327e', '#440154']}
+    mobileValueLabels=true
 />
 
 Gukesh vs Abasov was the biggest blunderfest of the tournament, with the infamous Fabi/Nepo round 14 game as a close second. Another key insight from this shows Nepo was unable to capitalize in games with the white pieces. Despite not losing a single game, in games where Nepo needed to push for a win, either his opponents defended incredibly well, or he was unable to bring them into complicated positions. 
