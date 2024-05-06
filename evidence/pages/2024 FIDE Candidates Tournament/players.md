@@ -208,7 +208,7 @@ Poor moves increase in likelihood by 2-3x with each jump in time pressure catego
   title="Winning Positions Converted"
 />
 
-Vidit is a bit of a surprise to among those with the most winning positions in the tournament. He was unable to convert twice, the most of any candidate. Gukesh converted all five of his winning positions, a crucial factor in his tournament victory.
+Vidit is a bit of a surprise to be among those with the most winning positions in the tournament. He was unable to convert twice, the most of any candidate. Gukesh converted all five of his winning positions, a crucial factor in his tournament victory.
 
 <BarChart
   data={winning_and_losing_positions}
