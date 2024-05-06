@@ -1,5 +1,5 @@
 ---
-title: "Chessray: A Deeper Dive into the 2024 FIDE Candidates Tournament"
+title: "Chessray: A Deeper Dive into Major Chess Tournaments"
 ---
 
 [Github Repo](https://github.com/adgramigna/chess-data) containing code which calls the Lichess API, stores raw data in S3, transforms data using dbt, and finally visualizes data in Evidence.
@@ -18,17 +18,17 @@ title: "Chessray: A Deeper Dive into the 2024 FIDE Candidates Tournament"
   - *Endgame*: Major pieces + minor pieces less than or equal to 6
   - *Game Openings*: Parsed directly from PGN annotated by Lichess 
 
-## Time pressure categories:
+## Time pressure categories
   - *no time pressure*: >= 5 minutes remaining on the player's clock
   - *time pressure*: Between 1 and 5 minutes remaining on the player's clock
   - *severe time pressure*: less than 60 seconds remaining on the player's clock
 
-## Accuracy:
+## Accuracy
   - Accuracy is calculated similar to [Lichess' Accuracy Formula](https://lichess.org/page/accuracy). 
     - [This blog post](https://lichess.org/@/JoaoTx/blog/exploring-the-python-chess-module/P0nb4FEs) helped me create my own accuracy calculation.
   - Accuracy varies depending on methodology. There is not a standard agreed upon way to calculate accuracy, which is why my numbers will differ from Lichess which will differ from chess.com
 
-## Poor Moves:
+## Poor Moves
   - *Poor Move*: An innacuracy, mistake, or blunder
   - *Inacurracy/Mistake/Blunder*: Different types of poor moves defined by how much the engine evaluation swings in the opponents favor after the move is made. Blunders are the most severe poor moves, inaccuracies are the least.
 
