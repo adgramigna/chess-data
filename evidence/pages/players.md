@@ -109,10 +109,22 @@ from poor_moves_agg
     y=poor_move_pct
     series=time_pressure_category
     type=grouped
-    title="Poor Move % by Time Pressure Category"
+    title="% of Total Moves which were Poor, by Time Pressure Category"
+    colorPalette={['#236AA5', '#45A1BF', '#A5CDEE']}
 />
 
-If there was a weakness for Gukesh this tournament, it was his struggles in severe time pressure. His 10x increase in poor moves in severe time pressure is well ahead of any other candidate. For Alireza Firouzja, time pressure seemed to affect him less than the field, as his poor move rate did not drastically jump with each tier. Nepo and Nakamura, as they are known for, managed to avoid clock trouble for much of the tournament.
+<BarChart 
+    data={poor_moves_time_pressure} 
+    x=colloquial_name
+    y=poor_moves
+    series=time_pressure_category
+    type=stacked100
+    title="Poor moves per Time Pressure Category"
+    colorPalette={['#A5CDEE', '#236AA5', '#45A1BF']}
+/>
+
+
+If there was a weakness for Gukesh this tournament, it was his struggles in severe time pressure. His 10x increase in poor moves in severe time pressure is well ahead of any other candidate. 37% of his poor moves came in time pressure or severe time pressure. Nepo and Nakamura, true to form, managed to avoid clock trouble for much of the tournament.
 
 ```sql overall_poor_moves
 with poor_moves_agg as (
@@ -179,6 +191,7 @@ from overall_view
 />
 
 Poor moves increase in likelihood by 2-3x with each jump in time pressure category
+
 
 ## Winning and Losing Positions
 
