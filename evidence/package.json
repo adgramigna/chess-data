@@ -26,7 +26,8 @@
     "@evidence-dev/postgres": "^1.0.5",
     "@evidence-dev/snowflake": "^1.0.4",
     "@evidence-dev/sqlite": "^2.0.4",
-    "@evidence-dev/trino": "^1.0.5"
+    "@evidence-dev/trino": "^1.0.5",
+    "blueimp-md5": "^2.19.0"
   },
   "overrides": {
     "jsonwebtoken": "9.0.0",
