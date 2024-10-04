@@ -163,5 +163,3 @@ sample_data
 .DS_Store
 
 duckdb_test.ipynb
-.vscode
-node_modules
