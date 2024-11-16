@@ -28,7 +28,8 @@
     "@evidence-dev/snowflake": "^1.0.4",
     "@evidence-dev/sqlite": "^2.0.4",
     "@evidence-dev/trino": "^1.0.5",
-    "blueimp-md5": "^2.19.0"
+    "blueimp-md5": "^2.19.0",
+    "sources": "^0.1.0"
   },
   "overrides": {
     "jsonwebtoken": "9.0.0",
