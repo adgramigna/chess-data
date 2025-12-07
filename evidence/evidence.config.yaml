@@ -1,6 +1,0 @@
-deployment:
-  basePath: /chess-data
-
-plugins:
-  datasources:
-    "@evidence-dev/duckdb": {}
