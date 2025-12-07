@@ -1,5 +1,6 @@
 deployment:
   basePath: /chess-data
+  adapter: static
 
 plugins:
   datasources:
