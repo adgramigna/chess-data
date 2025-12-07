@@ -33,10 +33,19 @@ jobs:
           npm run sources
           npm run build
 
+      - name: Debug - List build output
+        run: |
+          echo "Listing evidence directory:"
+          ls -la evidence/
+          echo "Listing evidence/build directory (if exists):"
+          ls -la evidence/build/ || echo "build directory not found"
+          echo "Finding all directories named 'build':"
+          find evidence -type d -name build || echo "No build directories found"
+
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'evidence/build/${{ github.event.repository.name }}'
+          path: 'evidence/build/chess-data'
 
   deploy:
     needs: build
