@@ -24,6 +24,7 @@ jobs:
         run: npm install
 
       - name: build
+        working-directory: evidence
         env:
           BASE_PATH: '/${{ github.event.repository.name }}/evidence'
           ## Add and uncomment any environment variables here
