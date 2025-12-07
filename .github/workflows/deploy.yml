@@ -26,26 +26,17 @@ jobs:
       - name: build
         working-directory: evidence
         env:
-          BASE_PATH: '/${{ github.event.repository.name }}'
+          BASE_PATH: '/chess-data'
           ## Add and uncomment any environment variables here
           EVIDENCE_SOURCE__LICHESS_DATA__FILENAME: ${{ secrets.EVIDENCE_SOURCE__LICHESS_DATA__FILENAME }}
         run: |
           npm run sources
           npm run build
 
-      - name: Debug - List build output
-        run: |
-          echo "Listing evidence directory:"
-          ls -la evidence/
-          echo "Listing evidence/build directory (if exists):"
-          ls -la evidence/build/ || echo "build directory not found"
-          echo "Finding all directories named 'build':"
-          find evidence -type d -name build || echo "No build directories found"
-
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'evidence/build/chess-data'
+          path: 'evidence/build'
 
   deploy:
     needs: build
