@@ -17,11 +17,14 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: evidence/package-lock.json
 
       - name: Install dependencies
+        working-directory: evidence
         run: npm install
 
       - name: build
+        working-directory: evidence
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
           ## Add and uncomment any environment variables here
@@ -33,7 +36,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'build/${{ github.event.repository.name }}'
+          path: 'evidence/build/${{ github.event.repository.name }}'
 
   deploy:
     needs: build
