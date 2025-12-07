@@ -26,7 +26,7 @@ jobs:
       - name: build
         working-directory: evidence
         env:
-          BASE_PATH: '/${{ github.event.repository.name }}/evidence'
+          BASE_PATH: '/${{ github.event.repository.name }}'
           ## Add and uncomment any environment variables here
           EVIDENCE_SOURCE__LICHESS_DATA__FILENAME: ${{ secrets.EVIDENCE_SOURCE__LICHESS_DATA__FILENAME }}
         run: |
