@@ -1,5 +1,5 @@
 deployment:
-  basePath: /chess-data
+  basePath: /chess-data/evidence
   adapter: static
 
 plugins:
